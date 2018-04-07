@@ -2,9 +2,9 @@ import csv
 from matplotlib import pyplot as plt
 from datetime import datetime
 
-filename = 'sitka_weather_07-2014.csv'
+filename = 'death_valley_2014.csv'
 
-# Get dates and high temperatures from file
+# Get dates, low and high temperatures from file
 with open(filename) as f:
     reader = csv.reader(f)
     header_row = next(reader)
@@ -13,26 +13,35 @@ with open(filename) as f:
     #for index, column_header in enumerate(header_row):
     #    print(index, column_header)
 
-    dates, highs = [], []
+    dates, highs, lows = [], [], []
     for row in reader:
-        current_date = datetime.strptime(row[0], "%Y-%m-%d")
-        dates.append(current_date)
+        try:
+            current_date = datetime.strptime(row[0], "%Y-%m-%d")
+            high = int(row[1])
+            low = int(row[3])
+        except ValueError:
+            print(current_date, 'missing_data')
+        else:
+            dates.append(current_date)
+            highs.append(high)
+            lows.append(low)
 
-        high = int(row[1])
-        highs.append(high)
 
-    print(highs)
+    #print(highs)
 
     first_date = datetime.strptime('2014-7-1', '%Y-%m-%d')
-    print(first_date)
+    #print(first_date)
 
 # Plot data
 
 fig = plt.figure(dpi=128, figsize=(10, 6))
-plt.plot(dates, highs, c='red')
+plt.plot(dates, highs, c='red', alpha=0.5)
+plt.plot(dates, lows, c='blue', alpha=0.5)
+plt.fill_between(dates, highs, lows, facecolor='blue', alpha=0.1)
 
 # Format plot
-plt.title("Daily high temperatures, July 2014", fontsize=14)
+title = "Daily high and low temperatures - 2014 \nDeathValley, CA"
+plt.title(title, fontsize=20)
 plt.xlabel('', fontsize=16)
 fig.autofmt_xdate()
 plt.ylabel("Temperature (F)", fontsize=16)
