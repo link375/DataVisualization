@@ -6,17 +6,20 @@ from random_walk import RandomWalk
 
 while True:
     # make a random walk and plot the points
-    rw = RandomWalk(50000)
+    rw = RandomWalk(5000)
     rw.fill_walk()
     # plt.scatter(rw.x_values, rw.y_values, s=15)
 
     # Set the size of the plotting window
-    plt.figure(figsize=(10, 6))
+    plt.figure(dpi=128, figsize=(10, 6))
 
     # Plot the points, and show the plot
     point_numbers = list(range(rw.num_points))
-    plt.scatter(rw.x_values, rw.y_values, c=point_numbers, cmap=plt.cm.Blues,
-                edgecolor='none', s=1)
+    #plt.scatter(rw.x_values, rw.y_values, c=point_numbers, cmap=plt.cm.Blues,
+    #            edgecolor='none', s=1)
+
+    # Molecular motion
+    plt.plot(rw.x_values, rw.y_values, linewidth=5)
 
     # Emphasize the first and last points
     plt.scatter(0, 0, c='green', edgecolors='none', s=100)
